@@ -8,13 +8,34 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int activeMenu = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(
       //   title: Text("hallo"),
       // ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Color(0xff1A2E35).withOpacity(0.05),
+            spreadRadius: 3,
+            blurRadius: 12,
+            offset: Offset(3, 0), // changes position of shadow
+          ),
+        ]),
+        child: Row(
+          children: [
+            BottomNavBar(icon: Icons.home, name: "Home", index: 0),
+            BottomNavBar(icon: Icons.article, name: "Articles", index: 1),
+            BottomNavBar(icon: Icons.search, name: "Search", index: 2),
+            BottomNavBar(
+                icon: Icons.notifications, name: "Notifications", index: 3),
+            BottomNavBar(icon: Icons.person, name: "Profile", index: 4),
+          ],
+        ),
+      ),
       backgroundColor: Color(0xFFEFF5F4),
       body: ListView(
         children: [
@@ -111,7 +132,7 @@ class _HomeState extends State<Home> {
                     ),
                     CardWalk(
                       title: "Meet our lovely dogs walking with us!",
-                      image: "assets/images/walkgroup1.png",
+                      image: "assets/images/walkgroup2.png",
                       place: "Valencia, Spain",
                       member: "8",
                       organized: "Yopiangga",
@@ -156,7 +177,7 @@ class _HomeState extends State<Home> {
                     ),
                     CardWalk(
                       title: "Meet our lovely dogs walking with us!",
-                      image: "assets/images/walkgroup1.png",
+                      image: "assets/images/walkgroup2.png",
                       place: "Valencia, Spain",
                       member: "8",
                       organized: "Yopiangga",
@@ -170,6 +191,43 @@ class _HomeState extends State<Home> {
             ]),
           ),
         ],
+      ),
+    );
+  }
+
+  GestureDetector BottomNavBar(
+      {IconData icon = Icons.home, int index = 0, String name = ""}) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          activeMenu = index;
+        });
+      },
+      child: Container(
+        height: 60,
+        width: MediaQuery.of(context).size.width / 5,
+        decoration: BoxDecoration(color: Colors.white),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color:
+                  activeMenu == index ? Color(0xff00B7B7) : Color(0xffB8BEC0),
+              size: 28,
+            ),
+            Text(
+              name,
+              style: TextStyle(
+                  color: activeMenu == index
+                      ? Color(0xff00B7B7)
+                      : Color(0xffB8BEC0),
+                  fontWeight:
+                      activeMenu == index ? FontWeight.bold : FontWeight.normal,
+                  fontSize: 12),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -274,66 +332,5 @@ class CardWalk extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({Key? key}) : super(key: key);
-
-  @override
-  _BottomNavBarState createState() => _BottomNavBarState();
-}
-
-class _BottomNavBarState extends State<BottomNavBar> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 60,
-        color: Colors.white,
-        child: GridView.count(
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          crossAxisCount: 2,
-          children: [
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.home,
-                    color: Color(0xff00B7B7),
-                    size: 32,
-                  ),
-                  Text(
-                    "Home",
-                    style: TextStyle(
-                        color: Color(0xff00B7B7),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.home,
-                    color: Color(0xff00B7B7),
-                    size: 32,
-                  ),
-                  Text(
-                    "Home",
-                    style: TextStyle(
-                        color: Color(0xff00B7B7),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14),
-                  )
-                ],
-              ),
-            )
-          ],
-        ));
   }
 }
